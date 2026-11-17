@@ -1,0 +1,36 @@
+[Unit]
+Description=Khabgah Dormitory Management System
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=khabgah
+Group=khabgah
+WorkingDirectory=/opt/khabgah
+EnvironmentFile=/etc/khabgah/khabgah.env
+# NODE_ENV=production باید داخل EnvironmentFile تنظیم شود.
+ExecStart=/usr/bin/node --import tsx /opt/khabgah/server.ts
+Restart=always
+RestartSec=5
+TimeoutStopSec=20
+KillSignal=SIGTERM
+
+# سخت‌سازی سرویس
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictNamespaces=true
+LockPersonality=true
+ReadWritePaths=/opt/khabgah/data
+UMask=0077
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target
